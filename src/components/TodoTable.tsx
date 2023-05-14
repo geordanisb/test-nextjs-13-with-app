@@ -1,13 +1,12 @@
 "use client"
 import { Todo } from '@prisma/client';
-import { Dispatch, FC, SetStateAction, useState } from 'react';
+import { FC, useState } from 'react';
 import { Button, ButtonGroup, Modal } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
 
 import {GiGearHammer} from "react-icons/gi";
 import {BiEditAlt} from "react-icons/bi";
 import {RiDeleteBin2Line} from "react-icons/ri";
-import { TodoAddForm } from './TodoAddForm';
 import { TodoUpdateForm } from './TodoUpdateForm';
 
 interface Props{
