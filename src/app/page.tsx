@@ -1,95 +1,35 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+import {  addTodo, getTodos, updateTodo,deleteTodo } from "@/facades/Todo";
+import { TodoTable } from "@/components/TodoTable";
+import { TodoAddForm } from "@/components/TodoAddForm";
+import { Todo } from "@prisma/client";
 
-export default function Home() {
-  return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+export default async function Home(){
+    const todos =  await getTodos();
+    if(!todos)return <>not todos were found!</>;
+    
+    //Server Actions
+    const addTaskHandler = async function(form:FormData){
+        "use server"
+        const task = form.get("task")?.toString()??"";
+        const d = form.get("done")?.toString()=="on"?true:false;
+        const todo = await addTodo(task,d as boolean);
+        //console.log(todo);
+    }
+    const actionEditTodo = async (todo:Todo)=>{
+        "use server"
+        const t = await updateTodo(todo.id,todo.task,todo.done);
+        //console.log(t);
+    }
+    const actionDeleteTodo = async (todo:Todo)=>{
+        "use server"
+        const t = await deleteTodo(todo.id);
+        //console.log(t);
+    }
+
+    return <>
+        <div style={{display:"flex",flex:"column"}}>
+            <TodoAddForm action={addTaskHandler}/>
+            <TodoTable todos={todos} actionEditTodo={actionEditTodo} actionDeleteTodo={actionDeleteTodo} />
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+    </>
 }
