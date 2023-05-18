@@ -2,6 +2,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ## .env.local
 ```bash
 NEXT_PUBLIC_API_BASE=http://localhost:3000/api
+NEXTAUTH_SECRET=z87XICEzdSweOL8rDEa2lei81yzhBaflINM87cLi0t0=
 ```
 ## Getting Started
 
