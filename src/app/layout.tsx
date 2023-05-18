@@ -3,6 +3,7 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import { NavBar } from '@/components/NavBar';
 import LayoutContainer from '@/components/LayoutContainer';
+import { NextAuthProvider } from './providers/NextAuthProvider';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,10 +21,12 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <NavBar></NavBar>
-        <LayoutContainer>
-          {children}
-        </LayoutContainer>
+        <NextAuthProvider>
+          <NavBar></NavBar>
+          <LayoutContainer>
+            {children}
+          </LayoutContainer>
+        </NextAuthProvider>
       </body>
     </html>
   )
