@@ -11,8 +11,8 @@ import { TodoUpdateForm } from './TodoUpdateForm';
 
 interface Props{
     todos:Todo[];
-    actionEditTodo:(todo:Todo)=>Promise<void>;
-    actionDeleteTodo:(todo:Todo)=>Promise<void>;
+    actionEditTodo:(todo:Todo)=>Promise<Todo>;
+    actionDeleteTodo:(todo:Todo)=>Promise<Todo>;
 }
 
 interface TodoModalProps{
